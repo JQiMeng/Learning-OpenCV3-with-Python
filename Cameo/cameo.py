@@ -1,10 +1,12 @@
 import cv2
+import filters
 from managers import WindowManager, CaptureManager
 
 class Cameo(object):
     def __init__(self):
         self._windowManager = WindowManager('Cameo', self.onKeypress)
         self._captureManager = CaptureManager(cv2.VideoCapture(0), self._windowManager, True)
+        # self._curveFilter = filters.EmbossFilter()
 
     def run(self):
         self._windowManager.createWindow()
@@ -12,6 +14,8 @@ class Cameo(object):
             self._captureManager.enterFrame()
             frame = self._captureManager.frame
 
+            filters.strokeEdge(frame, frame)
+            # self._curveFilter.apply(frame, frame)
 
             self._captureManager.exitFrame()
             self._windowManager.processEvents()
